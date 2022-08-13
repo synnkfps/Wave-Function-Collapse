@@ -26,7 +26,6 @@ def gen_c():
 
     return random_char + random_compatible + '\n'
 
-
 canvas = ''
 
 t = 0
