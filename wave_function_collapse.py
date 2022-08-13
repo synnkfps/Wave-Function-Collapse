@@ -1,7 +1,7 @@
 import random
 
-#              0    1    2    3     4    5    6    7    8    9    10  11
-characters = ["━", "┃", "┏", "┗", "┛", "┓", "┣", "┫", "┳", "┻", "╋", " "]
+#              0    1    2    3    4    5    6    7    8    9    10   11
+characters = ["━", "┃", "┏", "┗", "┛", "┓", "┣", "┫", "┳", "┻", "╋", "|"]
 c = characters
 
 compatible = {
@@ -21,17 +21,41 @@ compatible = {
 
 
 def gen_c():
-    random_char = characters[random.randrange(0, len(characters))]
-    random_compatible = random.choice(compatible[random_char])
-
-    return random_char + random_compatible + '\n'
-
-canvas = ''
+    return characters[random.randrange(0, len(characters))] + random.choice(compatible[characters[random.randrange(0, len(characters))]])
 
 t = 0
 
-while t < 50:
-    canvas += gen_c()
-    t += 1
+canvas1 = []
+canvas2 = []
+canvas3 = []
 
-print(canvas)
+def randomize():
+    t = characters[random.randrange(0, len(characters))]
+    tt = random.choice(compatible[t])
+    return t + tt
+
+final_canvas = ''
+
+# generate the canvas
+for i in range(20):
+    final_canvas += randomize()
+    
+
+queue = []
+count = 0
+cv = ''
+# ╋┣
+
+for i in final_canvas:
+    queue.append(i)
+    count += 1
+    
+    if len(queue)>2:
+        queue.pop()
+        if queue[1] in compatible[queue[0]]:
+            cv += queue[1] + random.choice(compatible[queue[1]])
+        else:
+            ''''''
+            print(queue[1], ' is not compatible with any of ', compatible[queue[0]])
+    
+print(cv)
