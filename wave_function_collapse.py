@@ -1,61 +1,57 @@
 import random
 
-#              0    1    2    3    4    5    6    7    8    9    10   11
-characters = ["━", "┃", "┏", "┗", "┛", "┓", "┣", "┫", "┳", "┻", "╋", "|"]
-c = characters
+#     0    1    2    3    4    5    6    7    8    9    10   11
+c = ["━", "┃", "┏", "┗", "┛", "┓", "┣", "┫", "┳", "┻", "╋", " "]
 
-compatible = {
-    characters[0]: [c[4], c[5], c[7], c[8], c[9], c[10]],
-    characters[1]: [c[11], c[6]],
-    characters[2]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
-    characters[3]: [c[0], c[4], c[7], c[8], c[9], c[10]],
-    characters[4]: [c[11]],
-    characters[5]: [c[11]],
-    characters[6]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
-    characters[7]: [c[11]],
-    characters[8]: [c[0], c[8], c[9], c[10]],
-    characters[9]: [c[0], c[8], c[9], c[10]],
-    characters[10]: [c[0], c[8], c[9], c[10]],
-    characters[11]: [c[1], c[3], c[6]]
+# receive from left/right
+bounding = {
+    c[0]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[1]: [c[2], c[3], c[6]],
+    c[2]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[3]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[4]: [c[2], c[6]],
+    c[5]: [c[2], c[6]],
+    c[6]: [c[0], c[4], c[5], c[8], c[9], c[10]],
+    c[7]: [c[1], c[2], c[3], c[6]],
+    c[8]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[9]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[10]: [c[0], c[4], c[5], c[7], c[8], c[9], c[10]],
+    c[11]: [c[1], c[2], c[3], c[6]]
 }
 
-
-def gen_c():
-    return characters[random.randrange(0, len(characters))] + random.choice(compatible[characters[random.randrange(0, len(characters))]])
-
-t = 0
-
-canvas1 = []
-canvas2 = []
-canvas3 = []
-
-def randomize():
-    t = characters[random.randrange(0, len(characters))]
-    tt = random.choice(compatible[t])
-    return t + tt
-
-final_canvas = ''
-
-# generate the canvas
-for i in range(20):
-    final_canvas += randomize()
-    
-
-queue = []
+output = ''
 count = 0
-cv = ''
-# ╋┣
 
-for i in final_canvas:
-    queue.append(i)
-    count += 1
+# print(rand, bounding[rand])
+for i in range(20):
+    output += random.choice(c)
+
+def rand_predict(t1, t2):
+    return random.choice(t1[t2])
+
+for j in output:
+    index = output.index(j)
+    current = output[index]
+    before = output[index-1] if index > 0 else ''
     
-    if len(queue)>2:
-        queue.pop()
-        if queue[1] in compatible[queue[0]]:
-            cv += queue[1] + random.choice(compatible[queue[1]])
-        else:
-            ''''''
-            print(queue[1], ' is not compatible with any of ', compatible[queue[0]])
-    
-print(cv)
+    if before != '' and current in bounding[before]:
+        pass
+    elif before != '' and current not in bounding[before]:
+        random_predict = rand_predict(bounding,before)
+
+        print(f'Changing: "{output[index]}[{index}]" with "{random_predict}" because it isnt compatible with {before}')
+        output = list(output)
+        output[index] = random_predict
+        output = ''.join(output)
+
+    print(f'\tBefore: {before}\n\tCurrent: {output[index]}')
+
+print(output)
+
+
+
+# easier way to get a char before another
+
+# string = 'abcdef'
+# print(string[string.index('c')-1])
+
