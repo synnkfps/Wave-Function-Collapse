@@ -14,9 +14,12 @@ put all of them randomly placed into a "canvas", then organizing them into ways 
 ### initial code theory
 my code theory does not uses an advanced algorithm, only logic...
 
-- make all the characters a dict with its available neighbour char
-- then select one of the available neighbour char randomly and place it
-- on the rest of the canvas do the same thing, but preferrably have a "edged" end
+- put the first character randomly
+- the next character will check the last one
+- then it will check if the predicted character is in one of the compatible neighbours of the last character
+- if it is, place it
+- - else: put a random character that IS a compatible neighbour
+- do the same with the rest
 
 ### how output should look like
 ```txt
