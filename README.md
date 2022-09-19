@@ -7,7 +7,7 @@
 ### the theory
 get an list of characters that has connections between them: 
 ```
-━ ┃ ┏ ┗ ┛ ┓ ┣ ┫ ┳ ┻ ╋ 
+━ ┣ ┫ ┳ ┻ 
 ```
 put all of them randomly placed into a "canvas", then organizing them into ways that they makes "sense" (intelligently placed), a way that they connects between themselves without getting messy.
 
