@@ -1,4 +1,4 @@
-# Wave-Function-Collapse
+# Wave Function Collapse
 ## pythonic way of doing it
 
 `Started: 13/08/2022`<br>
