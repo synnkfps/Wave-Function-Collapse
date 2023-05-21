@@ -1,97 +1,48 @@
 import random
+import time
 
-#     0   1    2    3    4    5    6    7    8    9    10   11
-c = ["━","┣", "┫", "┳", "┻", "", "┃", "╋", "┏", "┗", "┛", "┓"]
-# receive from left/right
-side_bounding = {
-    c[0]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]], 
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[1]: {
-        "left": [c[2], c[5], c[6]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[2]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[1], c[5], c[6]]
-    },
-    c[3]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[4]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[5]: {
-        "left": [c[2], c[5]],
-        "right": [c[1], c[5]]
-    },
-    c[6]: {
-        "left": [c[2], c[6]],
-        "right": [c[1], c[6]]
-    }, 
-    c[7]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[8]: {
-        "left": [c[2], c[5], c[6], c[10], c[11]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[9]: {
-        "left": [c[2], c[5], c[6], c[10], c[11]],
-        "right": [c[0], c[2], c[3], c[4], c[7], c[10], c[11]]
-    },
-    c[10]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[1], c[5], c[6], c[8], c[9]],
-    },
-    c[11]: {
-        "left": [c[0], c[1], c[3], c[4], c[7], c[8], c[9]],
-        "right": [c[1], c[5], c[6], c[8], c[9]]
-    }
+symbols = {
+  "━": {"up": "000", "right": "010", "down": "000", "left": "010"},
+  "┣": {"up": "010", "right": "010", "down": "010", "left": "000"},
+  "┫": {"up": "010", "right": "000", "down": "010", "left": "010"},
+  "┛": {"up": "000", "right": "010", "down": "010", "left": "010"},
+  "┻": {"up": "010", "right": "010", "down": "000", "left": "010"},
+  "┃": {"up": "010", "right": "000", "down": "010", "left": "000"},
+  "╋": {"up": "010", "right": "010", "down": "010", "left": "010"},
+  "┏": {"up": "000", "right": "010", "down": "010", "left": "000"},
+  "┗": {"up": "010", "right": "010", "down": "000", "left": "000"},
+  "┛": {"up": "010", "right": "000", "down": "000", "left": "010"},
+  "┓": {"up": "000", "right": "000", "down": "010", "left": "010"},
 }
-#     0   1    2    3    4    5    6    7    8    9    10   11
-c = ["━","┣", "┫", "┳", "┻", "", "┃", "╋", "┏", "┗", "┛", "┓"]
-output = []
-size = 30
 
-for i in range(size):
-    rand1 = random.choice(c)
-    rand2 = random.choice(c)
-    if rand1 in side_bounding[rand2][random.choice(['left'])]:
-        output.append(rand1)
-        output.append(rand2)
-    else:
-        rand1 = random.choice(c)
-        rand2 = random.choice(c)
-    if rand1 in side_bounding[rand2][random.choice(['right'])]:
-        output.append(rand2)
-        output.append(rand1)
-    else:
-        rand2 = random.choice(c)
-        rand1 = random.choice(c)
-else:
-    for i in range(len(output)):
-        for k, v in enumerate(output):
-            try:
-                if output[k] in side_bounding[output[k+1]]['left']:
-                    #print(f'{output[k]} bounds with {output[k+1]} from left ({output[k]}{output[k+1]})')
-                    pass
-                else:
-                    rLeft = random.choice(side_bounding[output[k+1]]['left'])
-                    print(f'(left) ({k}) changing {output[k]} to {rLeft} so it can bound to {output[k+1]} ({rLeft}{output[k+1]})')
-                    output[k] = rLeft
-                if output[k] in side_bounding[output[k-1]]['right']:
-                    #print(f'{output[k]} bounds with {output[k-1]} from right({output[k-1]}{output[k]})')
-                    pass
-                else:
-                    rRight = random.choice(side_bounding[output[k-1]]['right'])
-                    print(f'(right) ({k}) changing {output[k]} to {rRight} so it can bound to {output[k-1]} ({output[k-1]}{rRight})')
-                    output[k] = rRight
-            except:
-                pass
+def render(up, right, down, left) -> str:
+    empty = '░'
+    filled = '█'
 
-print('\n'+''.join(output))
+    lines = {'up': up, 'right': right, 'down': down, 'left': left}
+
+    block = {'top': '000', 'middle': '010', 'bottom': '000'}  # layer composition
+
+  # converting a 4 direction metrics into a 3x3 visualization needs to use the AND (&&) operator
+  # so it will add 1 if one of the parts that is being checked has 1
+
+  # top part
+    block_list = list(block["top"])
+    block_list = f'{empty if up[0] == "0" and left[0] == "0" else filled}{empty if up[1] == "0" else filled}{empty if up[2] == "0" and right[0] == "0" else filled}'
+    block["top"] = block_list
+  # middle part
+    block_list = list(block["middle"])
+    block_list = f'{empty if left[1] == "0" else filled}{filled}{empty if right[1] == "0" else filled}'
+    block["middle"] = block_list
+  # bottom part
+    block_list = list(block["bottom"])
+    block_list = f'{empty if down[2] == "0" and left[2] == "0" else filled}{empty if down[1] == "0" else filled}{empty if down[2] == "0" and right[2] == "0" else filled}'
+    block["bottom"] = block_list
+
+    for i in list(block.values()):
+        print(i)
+
+symbol = '┃'
+for i in symbols:
+  render(symbols[i]['up'],symbols[i]['right'],symbols[i]['down'],symbols[i]['left'])
+  print()
