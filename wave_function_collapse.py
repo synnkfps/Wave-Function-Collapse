@@ -75,4 +75,34 @@ def connection(char1:str, char2:str, direction:str) -> bool:
 
     return score
 
-print(connection('┗','┛', 'right'))
+#print(connection('┗','┛', 'right'))
+
+print()
+
+output = ''
+for i in range(4):
+    output += random.choice(list(symbols.keys()))
+
+print(output)
+output_copy = list(output)
+for x, i in enumerate(output):
+    print()
+    try:
+        print(f'DEBUG: \n-> CHARACTER: {i}\n-> RENDER METRIC: {render_metrics(i)}\n-> CHAR METRIC: {char_metrics(i)}\n-> CONNECTS: {connection(output[x], output[x+1], "right")}')
+    except:
+        pass
+
+    try:
+        connection_score = connection(output[x], output[x+1], "right")
+
+        while connection_score != 3:
+            print('Score isnt 3, re-rolling')
+            output_copy[x] = random.choice(list(symbols.keys()))
+            print('Re-rolled to', output_copy[x])
+            connection_score = connection(output_copy[x], output_copy[x+1], "right")
+    except:
+        pass
+
+    output = ''.join(output_copy)
+else:
+    print(output_copy, output)
