@@ -31,8 +31,8 @@ my code theory does not uses an advanced algorithm, only logic...
 
 ### how the output is looking like
 ```txt
-┫┏┫┣━┛┃
-┫┃┣╋┓┏╋
-┣┻┻┛┗╋┫
-┃ ┏━┳╋┫
+┏━┳┳━━┓
+┣━┫┗━┳┫
+┃ ┣┓┏╋┫
+┗━┻┻┻┻┛
 ```
