@@ -16,8 +16,8 @@ symbols = {
     
 }
 
-size = 5
-layer_amount = 4
+size = 7
+layer_amount = 3
 
 output = ''
 for i in range(size):
@@ -49,8 +49,39 @@ for j in range(layer_amount):
             rand_char = x
             
         tmp += rand_char
-
     layers.append(tmp)
     actual_layer += 1
 
 print('\n'.join(layers))
+print()
+
+layers_copy = []
+for i in layers:
+    line = ''
+    for j, x in enumerate(i):
+        line += x
+    
+    line = ('┣' if symbols[line[0]]['left'] == '010' else '┃')+line+('┫'if symbols[line[-1]]['right'] == '010' else '┃')
+    layers_copy.append(line)
+
+line = list('┏'+'━'*size+'┓')
+bruh = ''
+for x,i in enumerate(line):
+    if x > 0 and x <= size:
+        if symbols[layers_copy[0][x]]['up'] == '010':
+            i = '┳'
+    bruh += i
+
+print(bruh)
+for i in layers_copy:
+    print(i)
+
+line = list('┗'+'━'*size+'┛')
+bruh = ''
+for x,i in enumerate(line):
+    if x > 0 and x <= size:
+        if symbols[layers_copy[-1][x]]['down'] == '010':
+            i = '┻'
+    bruh += i
+
+print(bruh)
